@@ -16,6 +16,7 @@ paths:
   /todos:
     get:
       tags: [Todos]
+      operationId: getTodos
       summary: List todos
       description: Returns a pageless list of all todos.
       responses:
