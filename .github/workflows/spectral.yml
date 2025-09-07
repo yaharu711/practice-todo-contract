@@ -1,8 +1,5 @@
 name: spectral-lint
 on:
-  push:
-    branches:
-      - main
   pull_request:
     types: [opened, synchronize, reopened]
 concurrency:
@@ -22,13 +19,14 @@ jobs:
           node-version: 20
       - name: Install dependencies
         run: npm ci
-      - name: Setup reviewdog
+      # PR時: reviewdogでPRにアノテーションしつつ、違反があれば失敗（1回だけ実行）
+      - name: Setup reviewdog (PR only)
+        if: ${{ github.event_name == 'pull_request' }}
         uses: reviewdog/action-setup@v1
-      - name: Report via reviewdog (PR checks)
-        continue-on-error: true
+      - name: Lint with Spectral via reviewdog (PR)
+        if: ${{ github.event_name == 'pull_request' }}
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx spectral lint openapi/todo.yaml -f sarif | reviewdog -f=sarif -name="Spectral" -reporter=github-pr-check -filter-mode=nofilter -fail-on-error=false || true
-      - name: Run Spectral (fail on errors)
-        run: npm run lint
+          npx spectral lint openapi/todo.yaml -f sarif | \
+            reviewdog -f=sarif -name="Spectral Lint" -reporter=github-pr-check -filter-mode=nofilter -fail-on-error=true
