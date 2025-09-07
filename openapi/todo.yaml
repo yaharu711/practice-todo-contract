@@ -1,0 +1,121 @@
+openapi: 3.0.3
+info:
+  title: Todo API
+  version: 1.0.0
+  description: Simple Todo management API providing CRUD operations for todos.
+  contact:
+    name: API Team
+    url: https://example.com
+    email: api@example.com
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Todos
+    description: Operations related to todos
+paths:
+  /todos:
+    get:
+      tags: [Todos]
+      operationId: getTodos
+      summary: List todos
+      description: Returns a pageless list of all todos.
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Todo" }
+    post:
+      tags: [Todos]
+      operationId: postTodos
+      summary: Create a todo
+      description: Creates a new todo and returns its location.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/TodoCreate" }
+      responses:
+        "201":
+          description: created
+          headers:
+            Location:
+              description: URL of the created resource
+              schema: { type: string }
+  /todos/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        description: Todo identifier (UUID)
+        schema: { type: string, format: uuid }
+    get:
+      tags: [Todos]
+      operationId: getTodo
+      summary: Get a todo
+      description: Retrieves a single todo by its identifier.
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Todo" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    patch:
+      tags: [Todos]
+      operationId: patchTodo
+      summary: Update fields of a todo
+      description: Partially updates fields of an existing todo.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/TodoPatch" }
+      responses:
+        "200":
+          description: updated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Todo" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [Todos]
+      operationId: deleteTodo
+      summary: Delete a todo
+      description: Deletes a todo identified by the provided id.
+      responses:
+        "204": { description: deleted }
+        "404": { $ref: "#/components/responses/NotFound" }
+components:
+  schemas:
+    Todo:
+      type: object
+      required: [id, title, completed, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        title: { type: string, minLength: 1, example: "buy milk" }
+        completed: { type: boolean, example: false }
+        createdAt: { type: string, format: date-time }
+    TodoCreate:
+      type: object
+      required: [title]
+      properties:
+        title: { type: string, minLength: 1 }
+        completed: { type: boolean, default: false }
+    TodoPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        title: { type: string, minLength: 1 }
+        completed: { type: boolean }
+  responses:
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message: { type: string, example: "Not Found" }
