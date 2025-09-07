@@ -2,6 +2,8 @@
 
 Todo API（OpenAPI 3.0）の単一の仕様書（SSOT: Single Source of Truth）を管理します。CI では Spectral による Lint を実施し、PR に問題がある場合はマージをブロックします。ローカルでは Redocly CLI を使ってドキュメントをプレビューできます。
 
+（背景として、openapiからバックエンド・フロントエンドを自動生成して、スキーマ駆動開発がどれくらい良いものなのかその一端を確かめるために作っている）
+
 ## 目的・方針
 
 - APIコントラクト（OpenAPI）の管理
