@@ -31,6 +31,15 @@ curl -fsSL https://raw.githubusercontent.com/yaharu711/todo-contract/main/openap
 # then run PHPUnit with OpenAPI validation
 ```
 
+## Local Docs (ReDoc)
+
+- Start ReDoc server (hot reload on spec changes):
+  - `docker compose up -d redoc`
+- View in browser:
+  - http://localhost:8082
+- Stop:
+  - `docker compose stop redoc` or `docker compose down`
+
 ## Notes
 
 - Keep it lightweight: only Spectral lint here.
