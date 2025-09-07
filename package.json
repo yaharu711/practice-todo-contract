@@ -1,0 +1,11 @@
+{
+  "name": "todo-contract",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "spectral lint openapi/todo.yaml"
+  },
+  "devDependencies": {
+    "@stoplight/spectral-cli": "^6.11.2"
+  }
+}

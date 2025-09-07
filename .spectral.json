@@ -1,0 +1,8 @@
+{
+  "extends": ["spectral:oas"],
+  "rules": {
+    "no-$ref-siblings": "error",
+    "path-declarations-must-exist": "error",
+    "operation-operationId": "error"
+  }
+}
