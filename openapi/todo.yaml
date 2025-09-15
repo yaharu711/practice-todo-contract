@@ -44,6 +44,7 @@ paths:
             Location:
               description: URL of the created resource
               schema: { type: string }
+        "400": { $ref: "#/components/responses/BadRequest" }
   /todos/{id}:
     parameters:
       - in: path
@@ -79,6 +80,7 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Todo" }
+        "400": { $ref: "#/components/responses/BadRequest" }
         "404": { $ref: "#/components/responses/NotFound" }
     delete:
       tags: [Todos]
@@ -110,6 +112,20 @@ components:
       properties:
         title: { type: string, minLength: 1 }
         completed: { type: boolean }
+    ValidationErrorDetail:
+      type: object
+      required: [message, property]
+      properties:
+        message: { type: string, example: "May not be empty" }
+        property: { type: string, example: "messages[0].text" }
+    ValidationError:
+      type: object
+      required: [message, details]
+      properties:
+        message: { type: string, example: "The request body has 2 error(s)" }
+        details:
+          type: array
+          items: { $ref: "#/components/schemas/ValidationErrorDetail" }
   responses:
     NotFound:
       description: Not found
@@ -119,3 +135,15 @@ components:
             type: object
             properties:
               message: { type: string, example: "Not Found" }
+    BadRequest:
+      description: Invalid request body
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/ValidationError" }
+          example:
+            message: "The request body has 2 error(s)"
+            details:
+              - message: "May not be empty"
+                property: "messages[0].text"
+              - message: "Must be one of the following values: [text, image, video, audio, location, sticker, template, imagemap]"
+                property: "messages[1].type"
