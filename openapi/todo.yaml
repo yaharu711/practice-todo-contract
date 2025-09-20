@@ -109,13 +109,13 @@ components:
         createdAt: { type: string, format: date-time }
     TodoCreate:
       type: object
-      required: [title]
+      required: [title, completed]
       properties:
         title: { type: string, minLength: 1 }
         completed: { type: boolean, default: false }
     TodoPatch:
       type: object
-      minProperties: 1
+      required: [title, completed]
       properties:
         title: { type: string, minLength: 1 }
         completed: { type: boolean }
