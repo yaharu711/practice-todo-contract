@@ -108,6 +108,8 @@ components:
           type: string
           minLength: 1
           maxLength: 500
+          pattern: '^(?=.*\S)[\s\S]+$'
+          description: "前後の空白はトリムし、空白のみは不可"
           example: "buy milk"
         completed: { type: boolean, example: false }
         createdAt: { type: string, format: date-time }
@@ -119,6 +121,8 @@ components:
           type: string
           minLength: 1
           maxLength: 500
+          pattern: '^(?=.*\S)[\s\S]+$'
+          description: "前後の空白はトリムし、空白のみは不可"
         completed: { type: boolean, default: false }
     TodoPatch:
       type: object
@@ -128,6 +132,8 @@ components:
           type: string
           minLength: 1
           maxLength: 500
+          pattern: '^(?=.*\S)[\s\S]+$'
+          description: "前後の空白はトリムし、空白のみは不可"
         completed: { type: boolean }
     ValidationErrorDetail:
       type: object
