@@ -104,20 +104,36 @@ components:
       required: [id, title, completed, createdAt]
       properties:
         id: { type: string, format: uuid }
-        title: { type: string, minLength: 1, example: "buy milk" }
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+          pattern: '^(?=.*\S)[^\n]+$'
+          description: "前後の空白はトリムし、空白や改行のみは不可"
+          example: "buy milk"
         completed: { type: boolean, example: false }
         createdAt: { type: string, format: date-time }
     TodoCreate:
       type: object
       required: [title, completed]
       properties:
-        title: { type: string, minLength: 1 }
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+          pattern: '^(?=.*\S)[^\n]+$'
+          description: "前後の空白はトリムし、空白や改行のみは不可"
         completed: { type: boolean, default: false }
     TodoPatch:
       type: object
       required: [title, completed]
       properties:
-        title: { type: string, minLength: 1 }
+        title:
+          type: string
+          minLength: 1
+          maxLength: 500
+          pattern: '^(?=.*\S)[^\n]+$'
+          description: "前後の空白はトリムし、空白や改行のみは不可"
         completed: { type: boolean }
     ValidationErrorDetail:
       type: object
